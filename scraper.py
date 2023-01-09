@@ -1,6 +1,8 @@
 # Search for Multiple Products/ a specific product on on multiple websites to gain a better analasys of a Product. In this example we are searching for search_terms
 # This can be used for multiple applications, like E-Commerce, product performance comparisaon, 
 from bs4 import BeautifulSoup
+import numpy as np
+import pandas as pd
 import requests
 import re
 
@@ -42,24 +44,17 @@ for page in range(1, pages + 1):
 
 sorted_items = sorted(items_found.items(), key=lambda x: x[1]['price']) 
 
+rsultsData= []
 for item in sorted_items:
-    print(item[0])
-    print(f"${item[1]['price']}")
-    print(item[1]['link'])
-    print("--------------------------------")
+    rsultsData.append([item[0],f"${item[1]['price']}",item[1]['link']])
+    
+rsults = pd.DataFrame(data=rsultsData, columns=['Name', 'Price','URL'])
 
+rsults.to_csv("Results.csv")
 
-
-
-
-
-# prices = {}
-
-# for tr in trs[:10]:
-#     name, price = tr.contents[2:4]
-#     fixed_name = name.p.string
-#     fixed_price = price.a.string 
-
-#     prices[fixed_name] = fixed_price
-
-# print(prices)
+#Commented out/ for testign purposes.
+# for item in sorted_items:
+#     print(item[0])
+#     print(f"${item[1]['price']}")
+#     print(item[1]['link'])
+#     print("--------------------------------")
